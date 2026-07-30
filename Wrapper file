@@ -1,0 +1,270 @@
+//Tool Version: Vivado v.2023.1 (win64) Build 3865809 Sun May  7 15:05:29 MDT 2023
+//Date        : Wed Jul 29 16:20:20 2026
+//Host        : LAPTOP-36KT1PCJ running 64-bit major release  (build 9200)
+//Command     : generate_target design_1_wrapper.bd
+//Design      : design_1_wrapper
+//Purpose     : IP block netlist
+//--------------------------------------------------------------------------------
+`timescale 1 ps / 1 ps
+
+module design_1_wrapper
+   (DDC_0_scl_io,
+    DDC_0_sda_io,
+    DDR_addr,
+    DDR_ba,
+    DDR_cas_n,
+    DDR_ck_n,
+    DDR_ck_p,
+    DDR_cke,
+    DDR_cs_n,
+    DDR_dm,
+    DDR_dq,
+    DDR_dqs_n,
+    DDR_dqs_p,
+    DDR_odt,
+    DDR_ras_n,
+    DDR_reset_n,
+    DDR_we_n,
+    FIXED_IO_ddr_vrn,
+    FIXED_IO_ddr_vrp,
+    FIXED_IO_mio,
+    FIXED_IO_ps_clk,
+    FIXED_IO_ps_porb,
+    FIXED_IO_ps_srstb,
+    GPIO_1_tri_io,
+    TMDS_0_clk_n,
+    TMDS_0_clk_p,
+    TMDS_0_data_n,
+    TMDS_0_data_p,
+    TMDS_1_clk_n,
+    TMDS_1_clk_p,
+    TMDS_1_data_n,
+    TMDS_1_data_p,
+    bclk_i,
+    gpio_io_o_0,
+    iic_rtl_0_scl_io,
+    iic_rtl_0_sda_io,
+    pmoda_gpio_tri_tri_io,
+    pmodb_gpio_tri_io_tri_io,
+    sdata_in_i,
+    uart_rtl_0_rxd,
+    uart_rtl_0_txd,
+    wclk_i);
+  inout DDC_0_scl_io;
+  inout DDC_0_sda_io;
+  inout [14:0]DDR_addr;
+  inout [2:0]DDR_ba;
+  inout DDR_cas_n;
+  inout DDR_ck_n;
+  inout DDR_ck_p;
+  inout DDR_cke;
+  inout DDR_cs_n;
+  inout [3:0]DDR_dm;
+  inout [31:0]DDR_dq;
+  inout [3:0]DDR_dqs_n;
+  inout [3:0]DDR_dqs_p;
+  inout DDR_odt;
+  inout DDR_ras_n;
+  inout DDR_reset_n;
+  inout DDR_we_n;
+  inout FIXED_IO_ddr_vrn;
+  inout FIXED_IO_ddr_vrp;
+  inout [53:0]FIXED_IO_mio;
+  inout FIXED_IO_ps_clk;
+  inout FIXED_IO_ps_porb;
+  inout FIXED_IO_ps_srstb;
+  inout [0:0]GPIO_1_tri_io;
+  input TMDS_0_clk_n;
+  input TMDS_0_clk_p;
+  input [2:0]TMDS_0_data_n;
+  input [2:0]TMDS_0_data_p;
+  output TMDS_1_clk_n;
+  output TMDS_1_clk_p;
+  output [2:0]TMDS_1_data_n;
+  output [2:0]TMDS_1_data_p;
+  output bclk_i;
+  output [0:0]gpio_io_o_0;
+  inout iic_rtl_0_scl_io;
+  inout iic_rtl_0_sda_io;
+  inout [1:0]pmoda_gpio_tri_tri_io;
+  inout [1:0]pmodb_gpio_tri_io_tri_io;
+  output sdata_in_i;
+  input uart_rtl_0_rxd;
+  output uart_rtl_0_txd;
+  output wclk_i;
+
+  wire DDC_0_scl_i;
+  wire DDC_0_scl_io;
+  wire DDC_0_scl_o;
+  wire DDC_0_scl_t;
+  wire DDC_0_sda_i;
+  wire DDC_0_sda_io;
+  wire DDC_0_sda_o;
+  wire DDC_0_sda_t;
+  wire [14:0]DDR_addr;
+  wire [2:0]DDR_ba;
+  wire DDR_cas_n;
+  wire DDR_ck_n;
+  wire DDR_ck_p;
+  wire DDR_cke;
+  wire DDR_cs_n;
+  wire [3:0]DDR_dm;
+  wire [31:0]DDR_dq;
+  wire [3:0]DDR_dqs_n;
+  wire [3:0]DDR_dqs_p;
+  wire DDR_odt;
+  wire DDR_ras_n;
+  wire DDR_reset_n;
+  wire DDR_we_n;
+  wire FIXED_IO_ddr_vrn;
+  wire FIXED_IO_ddr_vrp;
+  wire [53:0]FIXED_IO_mio;
+  wire FIXED_IO_ps_clk;
+  wire FIXED_IO_ps_porb;
+  wire FIXED_IO_ps_srstb;
+  wire [0:0]GPIO_1_tri_i_0;
+  wire [0:0]GPIO_1_tri_io_0;
+  wire [0:0]GPIO_1_tri_o_0;
+  wire [0:0]GPIO_1_tri_t_0;
+  wire TMDS_0_clk_n;
+  wire TMDS_0_clk_p;
+  wire [2:0]TMDS_0_data_n;
+  wire [2:0]TMDS_0_data_p;
+  wire TMDS_1_clk_n;
+  wire TMDS_1_clk_p;
+  wire [2:0]TMDS_1_data_n;
+  wire [2:0]TMDS_1_data_p;
+  wire bclk_i;
+  wire [0:0]gpio_io_o_0;
+  wire iic_rtl_0_scl_i;
+  wire iic_rtl_0_scl_io;
+  wire iic_rtl_0_scl_o;
+  wire iic_rtl_0_scl_t;
+  wire iic_rtl_0_sda_i;
+  wire iic_rtl_0_sda_io;
+  wire iic_rtl_0_sda_o;
+  wire iic_rtl_0_sda_t;
+  wire [0:0]pmoda_gpio_tri_tri_i_0;
+  wire [1:1]pmoda_gpio_tri_tri_i_1;
+  wire [0:0]pmoda_gpio_tri_tri_io_0;
+  wire [1:1]pmoda_gpio_tri_tri_io_1;
+  wire [0:0]pmoda_gpio_tri_tri_o_0;
+  wire [1:1]pmoda_gpio_tri_tri_o_1;
+  wire [0:0]pmoda_gpio_tri_tri_t_0;
+  wire [1:1]pmoda_gpio_tri_tri_t_1;
+  wire [0:0]pmodb_gpio_tri_io_tri_i_0;
+  wire [1:1]pmodb_gpio_tri_io_tri_i_1;
+  wire [0:0]pmodb_gpio_tri_io_tri_io_0;
+  wire [1:1]pmodb_gpio_tri_io_tri_io_1;
+  wire [0:0]pmodb_gpio_tri_io_tri_o_0;
+  wire [1:1]pmodb_gpio_tri_io_tri_o_1;
+  wire [0:0]pmodb_gpio_tri_io_tri_t_0;
+  wire [1:1]pmodb_gpio_tri_io_tri_t_1;
+  wire sdata_in_i;
+  wire uart_rtl_0_rxd;
+  wire uart_rtl_0_txd;
+  wire wclk_i;
+
+  IOBUF DDC_0_scl_iobuf
+       (.I(DDC_0_scl_o),
+        .IO(DDC_0_scl_io),
+        .O(DDC_0_scl_i),
+        .T(DDC_0_scl_t));
+  IOBUF DDC_0_sda_iobuf
+       (.I(DDC_0_sda_o),
+        .IO(DDC_0_sda_io),
+        .O(DDC_0_sda_i),
+        .T(DDC_0_sda_t));
+  IOBUF GPIO_1_tri_iobuf_0
+       (.I(GPIO_1_tri_o_0),
+        .IO(GPIO_1_tri_io[0]),
+        .O(GPIO_1_tri_i_0),
+        .T(GPIO_1_tri_t_0));
+  design_1 design_1_i
+       (.DDC_0_scl_i(DDC_0_scl_i),
+        .DDC_0_scl_o(DDC_0_scl_o),
+        .DDC_0_scl_t(DDC_0_scl_t),
+        .DDC_0_sda_i(DDC_0_sda_i),
+        .DDC_0_sda_o(DDC_0_sda_o),
+        .DDC_0_sda_t(DDC_0_sda_t),
+        .DDR_addr(DDR_addr),
+        .DDR_ba(DDR_ba),
+        .DDR_cas_n(DDR_cas_n),
+        .DDR_ck_n(DDR_ck_n),
+        .DDR_ck_p(DDR_ck_p),
+        .DDR_cke(DDR_cke),
+        .DDR_cs_n(DDR_cs_n),
+        .DDR_dm(DDR_dm),
+        .DDR_dq(DDR_dq),
+        .DDR_dqs_n(DDR_dqs_n),
+        .DDR_dqs_p(DDR_dqs_p),
+        .DDR_odt(DDR_odt),
+        .DDR_ras_n(DDR_ras_n),
+        .DDR_reset_n(DDR_reset_n),
+        .DDR_we_n(DDR_we_n),
+        .FIXED_IO_ddr_vrn(FIXED_IO_ddr_vrn),
+        .FIXED_IO_ddr_vrp(FIXED_IO_ddr_vrp),
+        .FIXED_IO_mio(FIXED_IO_mio),
+        .FIXED_IO_ps_clk(FIXED_IO_ps_clk),
+        .FIXED_IO_ps_porb(FIXED_IO_ps_porb),
+        .FIXED_IO_ps_srstb(FIXED_IO_ps_srstb),
+        .GPIO_1_tri_i(GPIO_1_tri_i_0),
+        .GPIO_1_tri_o(GPIO_1_tri_o_0),
+        .GPIO_1_tri_t(GPIO_1_tri_t_0),
+        .TMDS_0_clk_n(TMDS_0_clk_n),
+        .TMDS_0_clk_p(TMDS_0_clk_p),
+        .TMDS_0_data_n(TMDS_0_data_n),
+        .TMDS_0_data_p(TMDS_0_data_p),
+        .TMDS_1_clk_n(TMDS_1_clk_n),
+        .TMDS_1_clk_p(TMDS_1_clk_p),
+        .TMDS_1_data_n(TMDS_1_data_n),
+        .TMDS_1_data_p(TMDS_1_data_p),
+        .bclk_i(bclk_i),
+        .gpio_io_o_0(gpio_io_o_0),
+        .iic_rtl_0_scl_i(iic_rtl_0_scl_i),
+        .iic_rtl_0_scl_o(iic_rtl_0_scl_o),
+        .iic_rtl_0_scl_t(iic_rtl_0_scl_t),
+        .iic_rtl_0_sda_i(iic_rtl_0_sda_i),
+        .iic_rtl_0_sda_o(iic_rtl_0_sda_o),
+        .iic_rtl_0_sda_t(iic_rtl_0_sda_t),
+        .pmoda_gpio_tri_tri_i({pmoda_gpio_tri_tri_i_1,pmoda_gpio_tri_tri_i_0}),
+        .pmoda_gpio_tri_tri_o({pmoda_gpio_tri_tri_o_1,pmoda_gpio_tri_tri_o_0}),
+        .pmoda_gpio_tri_tri_t({pmoda_gpio_tri_tri_t_1,pmoda_gpio_tri_tri_t_0}),
+        .pmodb_gpio_tri_io_tri_i({pmodb_gpio_tri_io_tri_i_1,pmodb_gpio_tri_io_tri_i_0}),
+        .pmodb_gpio_tri_io_tri_o({pmodb_gpio_tri_io_tri_o_1,pmodb_gpio_tri_io_tri_o_0}),
+        .pmodb_gpio_tri_io_tri_t({pmodb_gpio_tri_io_tri_t_1,pmodb_gpio_tri_io_tri_t_0}),
+        .sdata_in_i(sdata_in_i),
+        .uart_rtl_0_rxd(uart_rtl_0_rxd),
+        .uart_rtl_0_txd(uart_rtl_0_txd),
+        .wclk_i(wclk_i));
+  IOBUF iic_rtl_0_scl_iobuf
+       (.I(iic_rtl_0_scl_o),
+        .IO(iic_rtl_0_scl_io),
+        .O(iic_rtl_0_scl_i),
+        .T(iic_rtl_0_scl_t));
+  IOBUF iic_rtl_0_sda_iobuf
+       (.I(iic_rtl_0_sda_o),
+        .IO(iic_rtl_0_sda_io),
+        .O(iic_rtl_0_sda_i),
+        .T(iic_rtl_0_sda_t));
+  IOBUF pmoda_gpio_tri_tri_iobuf_0
+       (.I(pmoda_gpio_tri_tri_o_0),
+        .IO(pmoda_gpio_tri_tri_io[0]),
+        .O(pmoda_gpio_tri_tri_i_0),
+        .T(pmoda_gpio_tri_tri_t_0));
+  IOBUF pmoda_gpio_tri_tri_iobuf_1
+       (.I(pmoda_gpio_tri_tri_o_1),
+        .IO(pmoda_gpio_tri_tri_io[1]),
+        .O(pmoda_gpio_tri_tri_i_1),
+        .T(pmoda_gpio_tri_tri_t_1));
+  IOBUF pmodb_gpio_tri_io_tri_iobuf_0
+       (.I(pmodb_gpio_tri_io_tri_o_0),
+        .IO(pmodb_gpio_tri_io_tri_io[0]),
+        .O(pmodb_gpio_tri_io_tri_i_0),
+        .T(pmodb_gpio_tri_io_tri_t_0));
+  IOBUF pmodb_gpio_tri_io_tri_iobuf_1
+       (.I(pmodb_gpio_tri_io_tri_o_1),
+        .IO(pmodb_gpio_tri_io_tri_io[1]),
+        .O(pmodb_gpio_tri_io_tri_i_1),
+        .T(pmodb_gpio_tri_io_tri_t_1));
+endmodule
