@@ -91,7 +91,7 @@ It used to trasnfer and receive data within Master-Slave.
 
 FPGA-PYNQ-Z2 consist of 22 Aurdino pins which are implemented using:
 
-  Axi_gpio
+    Axi_gpio
 
 In my project i have active 4 pins.
 
