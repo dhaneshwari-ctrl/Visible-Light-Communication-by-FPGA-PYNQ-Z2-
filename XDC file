@@ -38,8 +38,7 @@ set_property PULLDOWN true [get_ports {gpio_tri_io_tri_t[0]}]
 #
 # Bidirectional LiFi receiver GPIO.
 #
-# PYNQ-Z2 Raspberry Pi GPIO:
-# RP_IO9_R = U7
+
 # jb3
 
 set_property PACKAGE_PIN W14[get_ports {lifi_rx_gpio_tri_io[0]}]
