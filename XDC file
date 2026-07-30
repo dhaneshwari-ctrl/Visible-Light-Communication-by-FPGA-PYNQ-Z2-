@@ -7,24 +7,6 @@
 # Top Module:
 #   design_1_wrapper
 #
-# MODIFIED VERSION
-#
-# Main fixes:
-#
-# 1. Removed PACKAGE_PIN assignment for audio_clk.
-#    audio_clk must be internally connected or removed from the top-level
-#    wrapper if it is not a real external clock.
-#
-# 2. Moved uart_rtl_0_rxd from T14 to U8.
-#    T14 is already used by GPIO_1_tri_io[0].
-#
-# 3. GPIO_1_tri_io[0] remains on T14.
-#
-# 4. The generated IP XDC error for:
-#       design_1_rst_s_axi_aclk_2_100M_0
-#    is not fixed here. Regenerate IP/Block Design output products.
-#
-###############################################################################
 
 
 ###############################################################################
