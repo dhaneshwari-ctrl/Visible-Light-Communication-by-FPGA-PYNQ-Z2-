@@ -260,5 +260,5 @@ The receiver path is:
 The BPW34 photodiode detects the optical signal. The OPA381 converts the photodiode current into a voltage signal, and the TLV3501 comparator converts the analog signal into a digital signal suitable for processing by the FPGA.
 
 #Procress of the project
-[ ] Sensor data trasfer successfully
-[ ] Audio is Trasmitting
+ ##Sensor data trasfer successfully
+ ## Audio is Trasmitting
