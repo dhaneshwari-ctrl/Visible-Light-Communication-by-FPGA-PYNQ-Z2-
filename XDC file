@@ -7,6 +7,24 @@
 # Top Module:
 #   design_1_wrapper
 #
+# MODIFIED VERSION
+#
+# Main fixes:
+#
+# 1. Removed PACKAGE_PIN assignment for audio_clk.
+#    audio_clk must be internally connected or removed from the top-level
+#    wrapper if it is not a real external clock.
+#
+# 2. Moved uart_rtl_0_rxd from T14 to U8.
+#    T14 is already used by GPIO_1_tri_io[0].
+#
+# 3. GPIO_1_tri_io[0] remains on T14.
+#
+# 4. The generated IP XDC error for:
+#       design_1_rst_s_axi_aclk_2_100M_0
+#    is not fixed here. Regenerate IP/Block Design output products.
+#
+###############################################################################
 
 
 ###############################################################################
@@ -38,13 +56,16 @@ set_property PULLDOWN true [get_ports {gpio_tri_io_tri_t[0]}]
 #
 # Bidirectional LiFi receiver GPIO.
 #
-
+# PYNQ-Z2 Raspberry Pi GPIO:
+# RP_IO9_R = U7
 # jb3
 
-set_property PACKAGE_PIN W14[get_ports {lifi_rx_gpio_tri_io[0]}]
-set_property IOSTANDARD LVCMOS33 [get_ports {lifi_rx_gpio_tri_io[0]}]
+set_property PACKAGE_PIN W14 [get_ports {lifi_rx_gpio_tri_i[0]}]
+set_property IOSTANDARD LVCMOS33 [get_ports {lifi_rx_gpio_tri_i[0]}]
 
 
+set_property PACKAGE_PIN V16 [get_ports {lifi_rx_gpio_tri_t}]
+set_property IOSTANDARD LVCMOS33 [get_ports {lifi_rx_gpio_tri_t}]
 
 ###############################################################################
 # GPIO_1
@@ -128,14 +149,30 @@ set_property IOSTANDARD LVCMOS33 [get_ports {pmodb_gpio_tri_io_tri_io[1]}]
 #   SDA = T9
 #
 
-set_property PACKAGE_PIN U9 [get_ports {iic_rtl_0_scl_io}]
-set_property PACKAGE_PIN T9 [get_ports {iic_rtl_0_sda_io}]
+set_property PACKAGE_PIN U9 [get_ports {ps_i2c0_scl_io}]
+set_property PACKAGE_PIN T9 [get_ports {ps_i2c0_sda_io}]
 
-set_property IOSTANDARD LVCMOS33 [get_ports {iic_rtl_0_scl_io}]
-set_property IOSTANDARD LVCMOS33 [get_ports {iic_rtl_0_sda_io}]
+set_property IOSTANDARD LVCMOS33 [get_ports {ps_i2c0_scl_io}]
+set_property IOSTANDARD LVCMOS33 [get_ports {ps_i2c0_sda_io}]
 
-set_property PULLUP TRUE [get_ports {iic_rtl_0_scl_io}]
-set_property PULLUP TRUE [get_ports {iic_rtl_0_sda_io}]
+set_property PULLUP TRUE [get_ports {ps_i2c0_scl_io}]
+set_property PULLUP TRUE [get_ports {ps_i2c0_sda_io}]
+
+###############################################################################
+# AUDIO CLOCK
+###############################################################################
+
+set_property -dict {PACKAGE_PIN U5 IOSTANDARD LVCMOS33} \
+    [get_ports {audio_clk_10MHz}]
+###############################################################################
+# CODEC ADDRESS
+###############################################################################
+
+set_property -dict {PACKAGE_PIN M17 IOSTANDARD LVCMOS33} \
+    [get_ports {codec_address_0[0]}]
+
+set_property -dict {PACKAGE_PIN M18 IOSTANDARD LVCMOS33} \
+    [get_ports {codec_address_0[1]}]
 
 
 ###############################################################################
@@ -147,8 +184,8 @@ set_property PULLUP TRUE [get_ports {iic_rtl_0_sda_io}]
 # Codec BCLK = R18
 #
 
-set_property PACKAGE_PIN R18 [get_ports {bclk_i}]
-set_property IOSTANDARD LVCMOS33 [get_ports {bclk_i}]
+set_property PACKAGE_PIN R18 [get_ports {BCLK_O_0}]
+set_property IOSTANDARD LVCMOS33 [get_ports {BCLK_O_0}]
 
 
 # I2S Left/Right Clock
@@ -156,8 +193,8 @@ set_property IOSTANDARD LVCMOS33 [get_ports {bclk_i}]
 # Codec LRCLK = T17
 #
 
-set_property PACKAGE_PIN T17 [get_ports {wclk_i}]
-set_property IOSTANDARD LVCMOS33 [get_ports {wclk_i}]
+set_property PACKAGE_PIN T17 [get_ports {LRCLK_O_0}]
+set_property IOSTANDARD LVCMOS33 [get_ports {LRCLK_O_0}]
 
 
 # I2S Data
@@ -167,8 +204,14 @@ set_property IOSTANDARD LVCMOS33 [get_ports {wclk_i}]
 # Codec SDATA = G18
 #
 
-set_property PACKAGE_PIN G18 [get_ports {sdata_in_i}]
-set_property IOSTANDARD LVCMOS33 [get_ports {sdata_in_i}]
+set_property PACKAGE_PIN G18 [get_ports {SDATA_O_0}]
+set_property IOSTANDARD LVCMOS33 [get_ports {SDATA_O_0}]
+
+
+# Codec -> FPGA
+set_property -dict {PACKAGE_PIN F17 IOSTANDARD LVCMOS33} \
+    [get_ports {SDATA_I_0}]
+
 
 
 ###############################################################################
