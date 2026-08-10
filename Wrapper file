@@ -1,5 +1,8 @@
+//Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+//Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
+//--------------------------------------------------------------------------------
 //Tool Version: Vivado v.2023.1 (win64) Build 3865809 Sun May  7 15:05:29 MDT 2023
-//Date        : Wed Jul 29 16:20:20 2026
+//Date        : Mon Aug 10 14:34:42 2026
 //Host        : LAPTOP-36KT1PCJ running 64-bit major release  (build 9200)
 //Command     : generate_target design_1_wrapper.bd
 //Design      : design_1_wrapper
@@ -8,7 +11,8 @@
 `timescale 1 ps / 1 ps
 
 module design_1_wrapper
-   (DDC_0_scl_io,
+   (BCLK_O_0,
+    DDC_0_scl_io,
     DDC_0_sda_io,
     DDR_addr,
     DDR_ba,
@@ -31,7 +35,9 @@ module design_1_wrapper
     FIXED_IO_ps_clk,
     FIXED_IO_ps_porb,
     FIXED_IO_ps_srstb,
-    GPIO_1_tri_io,
+    LRCLK_O_0,
+    SDATA_I_0,
+    SDATA_O_0,
     TMDS_0_clk_n,
     TMDS_0_clk_p,
     TMDS_0_data_n,
@@ -40,16 +46,18 @@ module design_1_wrapper
     TMDS_1_clk_p,
     TMDS_1_data_n,
     TMDS_1_data_p,
-    bclk_i,
+    audio_clk_10MHz,
+    codec_address_0,
     gpio_io_o_0,
-    iic_rtl_0_scl_io,
-    iic_rtl_0_sda_io,
+    lifi_rx_gpio_tri_i,
+    lifi_rx_gpio_tri_t,
     pmoda_gpio_tri_tri_io,
     pmodb_gpio_tri_io_tri_io,
-    sdata_in_i,
+    ps_i2c0_scl_io,
+    ps_i2c0_sda_io,
     uart_rtl_0_rxd,
-    uart_rtl_0_txd,
-    wclk_i);
+    uart_rtl_0_txd);
+  output [0:0]BCLK_O_0;
   inout DDC_0_scl_io;
   inout DDC_0_sda_io;
   inout [14:0]DDR_addr;
@@ -73,7 +81,9 @@ module design_1_wrapper
   inout FIXED_IO_ps_clk;
   inout FIXED_IO_ps_porb;
   inout FIXED_IO_ps_srstb;
-  inout [0:0]GPIO_1_tri_io;
+  output [0:0]LRCLK_O_0;
+  input [0:0]SDATA_I_0;
+  output [0:0]SDATA_O_0;
   input TMDS_0_clk_n;
   input TMDS_0_clk_p;
   input [2:0]TMDS_0_data_n;
@@ -82,17 +92,19 @@ module design_1_wrapper
   output TMDS_1_clk_p;
   output [2:0]TMDS_1_data_n;
   output [2:0]TMDS_1_data_p;
-  output bclk_i;
+  output audio_clk_10MHz;
+  output [1:0]codec_address_0;
   output [0:0]gpio_io_o_0;
-  inout iic_rtl_0_scl_io;
-  inout iic_rtl_0_sda_io;
+  input [0:0]lifi_rx_gpio_tri_i;
+  output [0:0]lifi_rx_gpio_tri_t;
   inout [1:0]pmoda_gpio_tri_tri_io;
   inout [1:0]pmodb_gpio_tri_io_tri_io;
-  output sdata_in_i;
+  inout ps_i2c0_scl_io;
+  inout ps_i2c0_sda_io;
   input uart_rtl_0_rxd;
   output uart_rtl_0_txd;
-  output wclk_i;
 
+  wire [0:0]BCLK_O_0;
   wire DDC_0_scl_i;
   wire DDC_0_scl_io;
   wire DDC_0_scl_o;
@@ -122,10 +134,9 @@ module design_1_wrapper
   wire FIXED_IO_ps_clk;
   wire FIXED_IO_ps_porb;
   wire FIXED_IO_ps_srstb;
-  wire [0:0]GPIO_1_tri_i_0;
-  wire [0:0]GPIO_1_tri_io_0;
-  wire [0:0]GPIO_1_tri_o_0;
-  wire [0:0]GPIO_1_tri_t_0;
+  wire [0:0]LRCLK_O_0;
+  wire [0:0]SDATA_I_0;
+  wire [0:0]SDATA_O_0;
   wire TMDS_0_clk_n;
   wire TMDS_0_clk_p;
   wire [2:0]TMDS_0_data_n;
@@ -134,16 +145,11 @@ module design_1_wrapper
   wire TMDS_1_clk_p;
   wire [2:0]TMDS_1_data_n;
   wire [2:0]TMDS_1_data_p;
-  wire bclk_i;
+  wire audio_clk_10MHz;
+  wire [1:0]codec_address_0;
   wire [0:0]gpio_io_o_0;
-  wire iic_rtl_0_scl_i;
-  wire iic_rtl_0_scl_io;
-  wire iic_rtl_0_scl_o;
-  wire iic_rtl_0_scl_t;
-  wire iic_rtl_0_sda_i;
-  wire iic_rtl_0_sda_io;
-  wire iic_rtl_0_sda_o;
-  wire iic_rtl_0_sda_t;
+  wire [0:0]lifi_rx_gpio_tri_i;
+  wire [0:0]lifi_rx_gpio_tri_t;
   wire [0:0]pmoda_gpio_tri_tri_i_0;
   wire [1:1]pmoda_gpio_tri_tri_i_1;
   wire [0:0]pmoda_gpio_tri_tri_io_0;
@@ -160,10 +166,10 @@ module design_1_wrapper
   wire [1:1]pmodb_gpio_tri_io_tri_o_1;
   wire [0:0]pmodb_gpio_tri_io_tri_t_0;
   wire [1:1]pmodb_gpio_tri_io_tri_t_1;
-  wire sdata_in_i;
+  wire ps_i2c0_scl_io;
+  wire ps_i2c0_sda_io;
   wire uart_rtl_0_rxd;
   wire uart_rtl_0_txd;
-  wire wclk_i;
 
   IOBUF DDC_0_scl_iobuf
        (.I(DDC_0_scl_o),
@@ -175,13 +181,9 @@ module design_1_wrapper
         .IO(DDC_0_sda_io),
         .O(DDC_0_sda_i),
         .T(DDC_0_sda_t));
-  IOBUF GPIO_1_tri_iobuf_0
-       (.I(GPIO_1_tri_o_0),
-        .IO(GPIO_1_tri_io[0]),
-        .O(GPIO_1_tri_i_0),
-        .T(GPIO_1_tri_t_0));
   design_1 design_1_i
-       (.DDC_0_scl_i(DDC_0_scl_i),
+       (.BCLK_O_0(BCLK_O_0),
+        .DDC_0_scl_i(DDC_0_scl_i),
         .DDC_0_scl_o(DDC_0_scl_o),
         .DDC_0_scl_t(DDC_0_scl_t),
         .DDC_0_sda_i(DDC_0_sda_i),
@@ -208,9 +210,9 @@ module design_1_wrapper
         .FIXED_IO_ps_clk(FIXED_IO_ps_clk),
         .FIXED_IO_ps_porb(FIXED_IO_ps_porb),
         .FIXED_IO_ps_srstb(FIXED_IO_ps_srstb),
-        .GPIO_1_tri_i(GPIO_1_tri_i_0),
-        .GPIO_1_tri_o(GPIO_1_tri_o_0),
-        .GPIO_1_tri_t(GPIO_1_tri_t_0),
+        .LRCLK_O_0(LRCLK_O_0),
+        .SDATA_I_0(SDATA_I_0),
+        .SDATA_O_0(SDATA_O_0),
         .TMDS_0_clk_n(TMDS_0_clk_n),
         .TMDS_0_clk_p(TMDS_0_clk_p),
         .TMDS_0_data_n(TMDS_0_data_n),
@@ -219,34 +221,21 @@ module design_1_wrapper
         .TMDS_1_clk_p(TMDS_1_clk_p),
         .TMDS_1_data_n(TMDS_1_data_n),
         .TMDS_1_data_p(TMDS_1_data_p),
-        .bclk_i(bclk_i),
+        .audio_clk_10MHz(audio_clk_10MHz),
+        .codec_address_0(codec_address_0),
         .gpio_io_o_0(gpio_io_o_0),
-        .iic_rtl_0_scl_i(iic_rtl_0_scl_i),
-        .iic_rtl_0_scl_o(iic_rtl_0_scl_o),
-        .iic_rtl_0_scl_t(iic_rtl_0_scl_t),
-        .iic_rtl_0_sda_i(iic_rtl_0_sda_i),
-        .iic_rtl_0_sda_o(iic_rtl_0_sda_o),
-        .iic_rtl_0_sda_t(iic_rtl_0_sda_t),
+        .lifi_rx_gpio_tri_i(lifi_rx_gpio_tri_i),
+        .lifi_rx_gpio_tri_t(lifi_rx_gpio_tri_t),
         .pmoda_gpio_tri_tri_i({pmoda_gpio_tri_tri_i_1,pmoda_gpio_tri_tri_i_0}),
         .pmoda_gpio_tri_tri_o({pmoda_gpio_tri_tri_o_1,pmoda_gpio_tri_tri_o_0}),
         .pmoda_gpio_tri_tri_t({pmoda_gpio_tri_tri_t_1,pmoda_gpio_tri_tri_t_0}),
         .pmodb_gpio_tri_io_tri_i({pmodb_gpio_tri_io_tri_i_1,pmodb_gpio_tri_io_tri_i_0}),
         .pmodb_gpio_tri_io_tri_o({pmodb_gpio_tri_io_tri_o_1,pmodb_gpio_tri_io_tri_o_0}),
         .pmodb_gpio_tri_io_tri_t({pmodb_gpio_tri_io_tri_t_1,pmodb_gpio_tri_io_tri_t_0}),
-        .sdata_in_i(sdata_in_i),
+        .ps_i2c0_scl_io(ps_i2c0_scl_io),
+        .ps_i2c0_sda_io(ps_i2c0_sda_io),
         .uart_rtl_0_rxd(uart_rtl_0_rxd),
-        .uart_rtl_0_txd(uart_rtl_0_txd),
-        .wclk_i(wclk_i));
-  IOBUF iic_rtl_0_scl_iobuf
-       (.I(iic_rtl_0_scl_o),
-        .IO(iic_rtl_0_scl_io),
-        .O(iic_rtl_0_scl_i),
-        .T(iic_rtl_0_scl_t));
-  IOBUF iic_rtl_0_sda_iobuf
-       (.I(iic_rtl_0_sda_o),
-        .IO(iic_rtl_0_sda_io),
-        .O(iic_rtl_0_sda_i),
-        .T(iic_rtl_0_sda_t));
+        .uart_rtl_0_txd(uart_rtl_0_txd));
   IOBUF pmoda_gpio_tri_tri_iobuf_0
        (.I(pmoda_gpio_tri_tri_o_0),
         .IO(pmoda_gpio_tri_tri_io[0]),
