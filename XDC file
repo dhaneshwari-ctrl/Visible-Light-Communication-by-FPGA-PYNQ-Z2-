@@ -1,28 +1,11 @@
 ###############################################################################
 # PYNQ-Z2 CONSTRAINT FILE
 #
-# Target Device:
+# Target:
 #   xc7z020clg400-1
 #
-# Top Module:
-#   design_1_wrapper
-#
-# MODIFIED VERSION
-#
-# Main fixes:
-#
-# 1. Removed PACKAGE_PIN assignment for audio_clk.
-#    audio_clk must be internally connected or removed from the top-level
-#    wrapper if it is not a real external clock.
-#
-# 2. Moved uart_rtl_0_rxd from T14 to U8.
-#    T14 is already used by GPIO_1_tri_io[0].
-#
-# 3. GPIO_1_tri_io[0] remains on T14.
-#
-# 4. The generated IP XDC error for:
-#       design_1_rst_s_axi_aclk_2_100M_0
-#    is not fixed here. Regenerate IP/Block Design output products.
+# Top:
+#   audio_1_wrapper
 #
 ###############################################################################
 
@@ -31,132 +14,83 @@
 # LI-FI TRANSMITTER
 ###############################################################################
 
-# GPIO_tx_tri_i[0]
+# GPIO2_0_tri_o[0]
 #
-# FPGA input for LiFi TX control.
+# LiFi TX output to LED driver / MCP1407.
 #
-# PYNQ-Z2 Raspberry Pi GPIO:
-# RP_IO17_R = F19
-#jA1
+# Previous TX pin:
+#   Y18
+#
+set_property PACKAGE_PIN Y18 [get_ports {GPIO2_0_tri_o[0]}]
+set_property IOSTANDARD LVCMOS33 [get_ports {GPIO2_0_tri_o[0]}]
 
-
-# LiFi TX output on PMODB JA2
-set_property PACKAGE_PIN Y18 [get_ports {gpio_io_o_0[0]}]
-set_property IOSTANDARD LVCMOS33 [get_ports {gpio_io_o_0[0]}]
-# Tie tri-state low (always driving)-JA7
-set_property PACKAGE_PIN U18 [get_ports {gpio_tri_io_tri_t[0]}]
-set_property IOSTANDARD LVCMOS33 [get_ports {gpio_tri_io_tri_t[0]}]
-set_property PULLDOWN true [get_ports {gpio_tri_io_tri_t[0]}]
 
 ###############################################################################
 # LI-FI RECEIVER
 ###############################################################################
 
-# lifi_rx_gpio_tri_io[0]
+# LiFi receiver input.
 #
-# Bidirectional LiFi receiver GPIO.
+# PYNQ-Z2 PMOD / GPIO pin previously used:
+#   W14
 #
-# PYNQ-Z2 Raspberry Pi GPIO:
-# RP_IO9_R = U7
-# jb3
-
 set_property PACKAGE_PIN W14 [get_ports {lifi_rx_gpio_tri_i[0]}]
 set_property IOSTANDARD LVCMOS33 [get_ports {lifi_rx_gpio_tri_i[0]}]
 
 
-set_property PACKAGE_PIN V16 [get_ports {lifi_rx_gpio_tri_t}]
-set_property IOSTANDARD LVCMOS33 [get_ports {lifi_rx_gpio_tri_t}]
-
 ###############################################################################
-# GPIO_1
+# AUDIO CODEC I2C
 ###############################################################################
 
-# GPIO_1_tri_io[0]
+# IMPORTANT:
 #
-# Bidirectional GPIO.
+# Your new wrapper has FOUR I2C-related top-level ports:
 #
-# Arduino GPIO 0 = T14
+#   scl_io_0
+#   sda_io_0
+#   scl_io_axi_iic
+#   sda_io_axi_iic
 #
-# NOTE:
-# UART RX MUST NOT use T14 because T14 is already occupied here.
+# DO NOT blindly constrain both pairs to the same physical pins.
 #
-
-set_property PACKAGE_PIN T14 [get_ports {GPIO_1_tri_io[0]}]
-set_property IOSTANDARD LVCMOS33 [get_ports {GPIO_1_tri_io[0]}]
-
-
-###############################################################################
-# GENERAL GPIO - 4 BIT
-###############################################################################
-
-# gpio_tri_io_tri_io[0]
-# gpio_tri_io_tri_io[1]
-# gpio_tri_io_tri_io[2]
-# gpio_tri_io_tri_io[3]
+# First determine which pair is actually connected to the ADAU1761 I2C
+# interface in the block design.
 #
-# PYNQ-Z2 GPIO pins.
+# If scl_io_0 / sda_io_0 are the actual codec I2C pins, use:
 #
 
-set_property PACKAGE_PIN R14 [get_ports {gpio_tri_io_tri_io[0]}]
-set_property PACKAGE_PIN P14 [get_ports {gpio_tri_io_tri_io[1]}]
-set_property PACKAGE_PIN N16 [get_ports {gpio_tri_io_tri_io[2]}]
-set_property PACKAGE_PIN M14 [get_ports {gpio_tri_io_tri_io[3]}]
+set_property PACKAGE_PIN U9 [get_ports {scl_io_0}]
+set_property PACKAGE_PIN T9 [get_ports {sda_io_0}]
 
-set_property IOSTANDARD LVCMOS33 [get_ports {gpio_tri_io_tri_io[0]}]
-set_property IOSTANDARD LVCMOS33 [get_ports {gpio_tri_io_tri_io[1]}]
-set_property IOSTANDARD LVCMOS33 [get_ports {gpio_tri_io_tri_io[2]}]
-set_property IOSTANDARD LVCMOS33 [get_ports {gpio_tri_io_tri_io[3]}]
+set_property IOSTANDARD LVCMOS33 [get_ports {scl_io_0}]
+set_property IOSTANDARD LVCMOS33 [get_ports {sda_io_0}]
+
+set_property PULLUP TRUE [get_ports {scl_io_0}]
+set_property PULLUP TRUE [get_ports {sda_io_0}]
 
 
-###############################################################################
-# PMOD A
-###############################################################################
-
-# Pmod A:
-#   Pmod A[0] = Y16
-#   Pmod A[1] = Y17
+# DO NOT assign PACKAGE_PIN to:
 #
+ set_property PACKAGE_PIN Y19 [get_ports {scl_io_axi_iic}]
+set_property PACKAGE_PIN Y16 [get_ports {sda_io_axi_iic}]
 
-set_property PACKAGE_PIN Y16 [get_ports {pmoda_gpio_tri_tri_io[0]}]
-set_property PACKAGE_PIN Y17 [get_ports {pmoda_gpio_tri_tri_io[1]}]
+set_property IOSTANDARD LVCMOS33 [get_ports {scl_io_axi_iic}]
+set_property IOSTANDARD LVCMOS33 [get_ports {sda_io_axi_iic}]
 
-set_property IOSTANDARD LVCMOS33 [get_ports {pmoda_gpio_tri_tri_io[0]}]
-set_property IOSTANDARD LVCMOS33 [get_ports {pmoda_gpio_tri_tri_io[1]}]
-
-
-###############################################################################
-# PMOD B
-###############################################################################
-
-# Pmod B:
-#   Pmod B[0] = W13
-#   Pmod B[1] = Y14
+set_property PULLUP TRUE [get_ports {scl_io_axi_iic}]
+set_property PULLUP TRUE [get_ports {sda_io_axi_iic}]
+# unless these are separately connected to physical external I2C pins.
 #
+# If they are internal connections between IP blocks, they need no XDC
+# PACKAGE_PIN constraint.
 
-set_property PACKAGE_PIN W13 [get_ports {pmodb_gpio_tri_io_tri_io[0]}]
-set_property PACKAGE_PIN Y14 [get_ports {pmodb_gpio_tri_io_tri_io[1]}]
-
-set_property IOSTANDARD LVCMOS33 [get_ports {pmodb_gpio_tri_io_tri_io[0]}]
-set_property IOSTANDARD LVCMOS33 [get_ports {pmodb_gpio_tri_io_tri_io[1]}]
+set_property PACKAGE_PIN R14 [get_ports {GPIO2_0_tri_t[0]}]
+set_property PACKAGE_PIN P14 [get_ports {lifi_rx_gpio_tri_t[0]}]
 
 
-###############################################################################
-# AUDIO CODEC - I2C
-###############################################################################
+set_property IOSTANDARD LVCMOS33 [get_ports {GPIO2_0_tri_t[0]}]
+set_property IOSTANDARD LVCMOS33 [get_ports {lifi_rx_gpio_tri_t[0]}]
 
-# Audio Codec I2C:
-#   SCL = U9
-#   SDA = T9
-#
-
-set_property PACKAGE_PIN U9 [get_ports {ps_i2c0_scl_io}]
-set_property PACKAGE_PIN T9 [get_ports {ps_i2c0_sda_io}]
-
-set_property IOSTANDARD LVCMOS33 [get_ports {ps_i2c0_scl_io}]
-set_property IOSTANDARD LVCMOS33 [get_ports {ps_i2c0_sda_io}]
-
-set_property PULLUP TRUE [get_ports {ps_i2c0_scl_io}]
-set_property PULLUP TRUE [get_ports {ps_i2c0_sda_io}]
 
 ###############################################################################
 # AUDIO CLOCK
@@ -164,284 +98,63 @@ set_property PULLUP TRUE [get_ports {ps_i2c0_sda_io}]
 
 set_property -dict {PACKAGE_PIN U5 IOSTANDARD LVCMOS33} \
     [get_ports {audio_clk_10MHz}]
+
+
 ###############################################################################
 # CODEC ADDRESS
 ###############################################################################
 
-set_property -dict {PACKAGE_PIN M17 IOSTANDARD LVCMOS33} \
-    [get_ports {codec_address_0[0]}]
+# ADAU1761 codec address pins.
+#
+# Previous assignments:
+#   codec_address_0[0] -> M17
+#   codec_address_0[1] -> M18
+#
 
-set_property -dict {PACKAGE_PIN M18 IOSTANDARD LVCMOS33} \
-    [get_ports {codec_address_0[1]}]
+set_property PACKAGE_PIN M17 [get_ports {codec_address_0[0]}]
+set_property PACKAGE_PIN M18 [get_ports {codec_address_0[1]}]
+
+set_property IOSTANDARD LVCMOS33 [get_ports {codec_address_0[0]}]
+set_property IOSTANDARD LVCMOS33 [get_ports {codec_address_0[1]}]
 
 
 ###############################################################################
 # AUDIO CODEC - I2S
 ###############################################################################
 
-# I2S Bit Clock
-#
+# I2S BIT CLOCK
 # Codec BCLK = R18
-#
 
-set_property PACKAGE_PIN R18 [get_ports {BCLK_O_0}]
-set_property IOSTANDARD LVCMOS33 [get_ports {BCLK_O_0}]
+set_property PACKAGE_PIN R18 [get_ports {BCLK_O_0[0]}]
+set_property IOSTANDARD LVCMOS33 [get_ports {BCLK_O_0[0]}]
 
 
-# I2S Left/Right Clock
-#
+# I2S LEFT/RIGHT CLOCK
 # Codec LRCLK = T17
-#
 
-set_property PACKAGE_PIN T17 [get_ports {LRCLK_O_0}]
-set_property IOSTANDARD LVCMOS33 [get_ports {LRCLK_O_0}]
+set_property PACKAGE_PIN T17 [get_ports {LRCLK_O_0[0]}]
+set_property IOSTANDARD LVCMOS33 [get_ports {LRCLK_O_0[0]}]
 
 
-# I2S Data
-#
-# FPGA output to codec.
-#
+# I2S DATA FPGA -> CODEC
 # Codec SDATA = G18
-#
 
-set_property PACKAGE_PIN G18 [get_ports {SDATA_O_0}]
-set_property IOSTANDARD LVCMOS33 [get_ports {SDATA_O_0}]
-
-
-# Codec -> FPGA
-set_property -dict {PACKAGE_PIN F17 IOSTANDARD LVCMOS33} \
-    [get_ports {SDATA_I_0}]
+set_property PACKAGE_PIN G18 [get_ports {SDATA_O_0[0]}]
+set_property IOSTANDARD LVCMOS33 [get_ports {SDATA_O_0[0]}]
 
 
+# I2S DATA CODEC -> FPGA
+# Codec SDATA input to FPGA = F17
 
-###############################################################################
-# AUDIO CLOCK
-###############################################################################
-
-# IMPORTANT:
-#
-# DO NOT assign a PACKAGE_PIN to audio_clk here.
-#
-# Vivado previously reported:
-#
-# [Place 30-58] IO placement is infeasible.
-# IO Group:
-# SioStd: LVCMOS18
-# VCCO = 1.8
-# TermDir: In
-# Term: audio_clk
-#
-# This indicates that Vivado is treating audio_clk as a physical
-# top-level input.
-#
-# If audio_clk is generated internally in the Block Design:
-#
-#   - Connect it internally.
-#   - Do not expose it as a top-level external port.
-#
-# If audio_clk is not needed:
-#
-#   - Remove it from the top-level wrapper.
-#
-# If audio_clk is genuinely external:
-#
-#   - A valid PYNQ-Z2 physical clock pin must be selected.
-#   - The IOSTANDARD must match the actual hardware voltage.
-#
-# NO PACKAGE_PIN CONSTRAINT IS APPLIED HERE.
-#
-###############################################################################
+set_property PACKAGE_PIN F17 [get_ports {SDATA_I_0[0]}]
+set_property IOSTANDARD LVCMOS33 [get_ports {SDATA_I_0[0]}]
 
 
 ###############################################################################
-# UART
+# ZYNQ PS
 ###############################################################################
 
-# UART RX
-#
-# IMPORTANT:
-# T14 was previously used by both:
-#
-#   GPIO_1_tri_io[0]
-#   uart_rtl_0_rxd
-#
-# This caused:
-#
-# [Vivado 12-1411]
-# port uart_rtl_0_rxd cannot be placed on PACKAGE_PIN T14
-# because PACKAGE_PIN is occupied by GPIO_1_tri_io[0]
-#
-# UART RX is moved to U8.
-#
-
-set_property PACKAGE_PIN U8 [get_ports {uart_rtl_0_rxd}]
-set_property IOSTANDARD LVCMOS33 [get_ports {uart_rtl_0_rxd}]
-
-
-# UART TX
-#
-# Arduino GPIO 1 = U12
-#
-
-set_property PACKAGE_PIN U12 [get_ports {uart_rtl_0_txd}]
-set_property IOSTANDARD LVCMOS33 [get_ports {uart_rtl_0_txd}]
-
-
-###############################################################################
-# HDMI INPUT
-###############################################################################
-
-# HDMI input differential clock
-#
-
-set_property PACKAGE_PIN N18 [get_ports {TMDS_0_clk_p}]
-set_property PACKAGE_PIN P19 [get_ports {TMDS_0_clk_n}]
-
-set_property IOSTANDARD TMDS_33 [get_ports {TMDS_0_clk_p}]
-set_property IOSTANDARD TMDS_33 [get_ports {TMDS_0_clk_n}]
-
-
-###############################################################################
-# HDMI INPUT - DATA 0
-###############################################################################
-
-set_property PACKAGE_PIN V20 [get_ports {TMDS_0_data_p[0]}]
-set_property PACKAGE_PIN W20 [get_ports {TMDS_0_data_n[0]}]
-
-set_property IOSTANDARD TMDS_33 [get_ports {TMDS_0_data_p[0]}]
-set_property IOSTANDARD TMDS_33 [get_ports {TMDS_0_data_n[0]}]
-
-
-###############################################################################
-# HDMI INPUT - DATA 1
-###############################################################################
-
-set_property PACKAGE_PIN T20 [get_ports {TMDS_0_data_p[1]}]
-set_property PACKAGE_PIN U20 [get_ports {TMDS_0_data_n[1]}]
-
-set_property IOSTANDARD TMDS_33 [get_ports {TMDS_0_data_p[1]}]
-set_property IOSTANDARD TMDS_33 [get_ports {TMDS_0_data_n[1]}]
-
-
-###############################################################################
-# HDMI INPUT - DATA 2
-###############################################################################
-
-set_property PACKAGE_PIN N20 [get_ports {TMDS_0_data_p[2]}]
-set_property PACKAGE_PIN P20 [get_ports {TMDS_0_data_n[2]}]
-
-set_property IOSTANDARD TMDS_33 [get_ports {TMDS_0_data_p[2]}]
-set_property IOSTANDARD TMDS_33 [get_ports {TMDS_0_data_n[2]}]
-
-
-###############################################################################
-# HDMI INPUT - DDC
-###############################################################################
-
-# HDMI DDC SCL
-#
-
-set_property PACKAGE_PIN U14 [get_ports {DDC_0_scl_io}]
-set_property IOSTANDARD LVCMOS33 [get_ports {DDC_0_scl_io}]
-set_property PULLUP TRUE [get_ports {DDC_0_scl_io}]
-
-
-# HDMI DDC SDA
-#
-
-set_property PACKAGE_PIN U15 [get_ports {DDC_0_sda_io}]
-set_property IOSTANDARD LVCMOS33 [get_ports {DDC_0_sda_io}]
-set_property PULLUP TRUE [get_ports {DDC_0_sda_io}]
-
-
-###############################################################################
-# HDMI OUTPUT
-###############################################################################
-
-# HDMI output differential clock
-#
-
-set_property PACKAGE_PIN L16 [get_ports {TMDS_1_clk_p}]
-set_property PACKAGE_PIN L17 [get_ports {TMDS_1_clk_n}]
-
-set_property IOSTANDARD TMDS_33 [get_ports {TMDS_1_clk_p}]
-set_property IOSTANDARD TMDS_33 [get_ports {TMDS_1_clk_n}]
-
-
-###############################################################################
-# HDMI OUTPUT - DATA 0
-###############################################################################
-
-set_property PACKAGE_PIN K17 [get_ports {TMDS_1_data_p[0]}]
-set_property PACKAGE_PIN K18 [get_ports {TMDS_1_data_n[0]}]
-
-set_property IOSTANDARD TMDS_33 [get_ports {TMDS_1_data_p[0]}]
-set_property IOSTANDARD TMDS_33 [get_ports {TMDS_1_data_n[0]}]
-
-
-###############################################################################
-# HDMI OUTPUT - DATA 1
-###############################################################################
-
-set_property PACKAGE_PIN K19 [get_ports {TMDS_1_data_p[1]}]
-set_property PACKAGE_PIN J19 [get_ports {TMDS_1_data_n[1]}]
-
-set_property IOSTANDARD TMDS_33 [get_ports {TMDS_1_data_p[1]}]
-set_property IOSTANDARD TMDS_33 [get_ports {TMDS_1_data_n[1]}]
-
-
-###############################################################################
-# HDMI OUTPUT - DATA 2
-###############################################################################
-
-set_property PACKAGE_PIN J18 [get_ports {TMDS_1_data_p[2]}]
-set_property PACKAGE_PIN H18 [get_ports {TMDS_1_data_n[2]}]
-
-set_property IOSTANDARD TMDS_33 [get_ports {TMDS_1_data_p[2]}]
-set_property IOSTANDARD TMDS_33 [get_ports {TMDS_1_data_n[2]}]
-
-
-###############################################################################
-# HDMI OUTPUT HPD
-###############################################################################
-
-# HPD is not exposed as a top-level port.
-#
-# No constraint.
-
-
-###############################################################################
-# PIXEL CLOCK OUTPUT
-###############################################################################
-
-# PixelClk_0 is an output.
-#
-# No PACKAGE_PIN assignment.
-
-
-###############################################################################
-# PIXEL CLOCK LOCK
-###############################################################################
-
-# aPixelClkLckd_0 is internal status.
-#
-# No PACKAGE_PIN assignment.
-
-
-###############################################################################
-# PIXEL LOCK
-###############################################################################
-
-# pLocked_0 is internal status.
-#
-# No PACKAGE_PIN assignment.
-
-
-###############################################################################
-# ZYNQ PROCESSING SYSTEM
-###############################################################################
-
-# Do not constrain:
+# No constraints required for:
 #
 # DDR_addr
 # DDR_ba
@@ -457,17 +170,18 @@ set_property IOSTANDARD TMDS_33 [get_ports {TMDS_1_data_n[2]}]
 # DDR_odt
 # DDR_ras_n
 # DDR_reset_n
+# DDR_we_n
 #
+# FIXED_IO_ddr_vrn
+# FIXED_IO_ddr_vrp
 # FIXED_IO_mio
 # FIXED_IO_ps_clk
 # FIXED_IO_ps_porb
 # FIXED_IO_ps_srstb
-# FIXED_IO_ddr_vrn
-# FIXED_IO_ddr_vrp
 #
-# These are managed by the Zynq Processing System.
+# These are controlled by the Zynq Processing System.
 
 
 ###############################################################################
-# END OF XDC
+# END
 ###############################################################################
